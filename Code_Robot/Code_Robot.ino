@@ -23,6 +23,12 @@ void loop() {
   }
   
   delay(5000);
+
+  for(int i = vitesse_croisiere; i >= 0; i--) {
+    avancer(i);
+    delay(5);
+  }
+  
   stop();
   while(1);
 }
