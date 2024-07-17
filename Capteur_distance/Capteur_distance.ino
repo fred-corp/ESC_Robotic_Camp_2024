@@ -10,6 +10,13 @@ void setup() {
 }
 
 void loop() {
+  float obstacle = capteurDistance();
+
+  Serial.println(obstacle);
+  delay(50);
+}
+
+float capteurDistance() {
   digitalWrite(TRIG_PIN, HIGH);
   delayMicroseconds(10);
   digitalWrite(TRIG_PIN, LOW);
@@ -19,6 +26,6 @@ void loop() {
 
   // calculer la distance en centimètres
   float distance = (temps * 340.0 / 10000.0) / 2.0;
-  Serial.println(distance);
-  delay(50);
+
+  return distance;
 }
