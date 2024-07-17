@@ -3,6 +3,8 @@
 #define IN3 6
 #define IN4 9
 
+int vitesse_croisiere = 85;
+
 void setup() {
   pinMode(IN1, OUTPUT);
   pinMode(IN2, OUTPUT);
@@ -14,7 +16,12 @@ void setup() {
 
 void loop() {
   // faire des choses ici
-  avancer(100);
+
+  for(int i = 0; i <= vitesse_croisiere; i++) {
+    avancer(i);
+    delay(5);
+  }
+  
   delay(5000);
   stop();
   while(1);
