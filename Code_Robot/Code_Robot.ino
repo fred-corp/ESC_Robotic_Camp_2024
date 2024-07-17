@@ -14,17 +14,21 @@ void setup() {
 
 void loop() {
   // faire des choses ici
-  avancer();
+  avancer(100);
   delay(5000);
   stop();
   while(1);
 }
 
-void avancer() {
-  // code pour faire avancer
-  analogWrite(IN1, 255);
+void avancer(int vitesse) {
+  int PWM = map(vitesse, 0, 100, 0, 255);
+  
+  int gauche = map(PWM, 0, 255, 0, 234);
+  int droite = map(PWM, 0, 255, 0, 255);
+  
+  analogWrite(IN1, gauche);
   analogWrite(IN2, 0);
-  analogWrite(IN3, 255);
+  analogWrite(IN3, droite);
   analogWrite(IN4, 0);
 }
 
