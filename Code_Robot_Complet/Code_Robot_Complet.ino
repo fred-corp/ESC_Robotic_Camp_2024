@@ -1,4 +1,5 @@
 #include <Servo.h>
+#include <SoftwareSerial.h>
 
 // Broches
 // H-Bridge
@@ -12,6 +13,10 @@ Servo monServo;
 // Capteur de distance
 #define TRIG_PIN   7
 #define ECHO_PIN   8
+// Module BT
+#define BT_RX     12
+#define BT_TX     11
+SoftwareSerial bluetooth(BT_TX, BT_RX);
 
 // Valeurs callibration
 #define ANGLE_FACE    90
@@ -29,6 +34,8 @@ float distance;
 float distanceGauche;
 float distanceDroite;
 
+char recu;
+
 void setup() {
   // H-Bridge
   pinMode(IN1, OUTPUT);
@@ -41,6 +48,8 @@ void setup() {
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
 
+  bluetooth.begin(9600);
+
   Serial.begin(9600);
 
   monServo.write(ANGLE_FACE);
@@ -48,6 +57,19 @@ void setup() {
 }
 
 void loop() {
+  if (bluetooth.available()) {
+    recu = bluetooth.read();
+
+    if (recu == 'm') {
+      if (etat == NORMAL) {
+        etat = MANUEL;
+      }
+      else if (etat == MANUEL) {
+        etat = NORMAL;
+      }
+    }
+  }
+
   switch (etat) {
     case NORMAL:
       // Avancer et regarder si il y a un obstacle
@@ -86,7 +108,6 @@ void loop() {
       if (distanceGauche <= DISTANCE_MIN && distanceDroite <= DISTANCE_MIN) {
         reculer(40);
         delay(750);
-        arret();
         break;
       }
 
@@ -101,6 +122,7 @@ void loop() {
         etat = 0;
       }
 
+      arret();
       break;
     case MANUEL:
       break;
