@@ -25,7 +25,9 @@ Servo monServo;
 #define MANUEL   2
 
 int etat = NORMAL;
-
+float distance;
+float distanceGauche;
+float distanceDroite;
 
 void setup() {
   // H-Bridge
@@ -46,14 +48,14 @@ void setup() {
 }
 
 void loop() {
-  switch(etat){
+  switch (etat) {
     case NORMAL:
       // Avancer et regarder si il y a un obstacle
       avancer(100);
-      float distance = capteurDistance();
-      if(distance <= DISTANCE_MIN) {
-         stop();
-         etat = OBSTACLE;
+      distance = capteurDistance();
+      if (distance <= DISTANCE_MIN) {
+        arret();
+        etat = OBSTACLE;
       }
       break;
     case OBSTACLE:
@@ -61,38 +63,37 @@ void loop() {
       // et repasser à l'état normal
       monServo.write(ANGLE_GAUCHE);
       delay(250);
-      float distanceGauche = capteurDistance();
+      distanceGauche = capteurDistance();
       delay(100);
 
       monServo.write(ANGLE_DROIT);
       delay(400);
-      float distanceDroite = capteurDistance();
+      distanceDroite = capteurDistance();
       delay(100);
 
       monServo.write(ANGLE_FACE);
       delay(100);
 
-      if(distanceGauche <= DISTANCE_MIN && distanceDroite <= DISTANCE_MIN) {
+      if (distanceGauche <= DISTANCE_MIN && distanceDroite <= DISTANCE_MIN) {
         reculer(40);
         delay(750);
-        stop();
+        arret();
         break;
       }
-      
-      if(distanceGauche > distanceDroite){
+
+      if (distanceGauche > distanceDroite) {
         gauche(50);
         delay(500);
-        etat = NORMAL;
+        etat = 0;
       }
       else {
         droite(50);
         delay(500);
-        etat = NORMAL;
+        etat = 0;
       }
-      
+
       break;
     case MANUEL:
-      // Plus tard
       break;
   }
   delay(100);
@@ -112,7 +113,7 @@ float capteurDistance() {
   return distance;
 }
 
-void stop() {
+void arret() {
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, LOW);
@@ -121,10 +122,10 @@ void stop() {
 
 void avancer(int vitesse) {
   int PWM = map(vitesse, 0, 100, 0, 255);
-  
+
   int gauche = map(PWM, 0, 255, 0, 255);
   int droite = map(PWM, 0, 255, 0, 255);
-  
+
   analogWrite(IN1, gauche);
   analogWrite(IN2, 0);
   analogWrite(IN3, droite);
@@ -133,10 +134,10 @@ void avancer(int vitesse) {
 
 void reculer(int vitesse) {
   int PWM = map(vitesse, 0, 100, 0, 255);
-  
+
   int gauche = map(PWM, 0, 255, 0, 255);
   int droite = map(PWM, 0, 255, 0, 255);
-  
+
   analogWrite(IN1, 0);
   analogWrite(IN2, gauche);
   analogWrite(IN3, 0);
@@ -145,10 +146,10 @@ void reculer(int vitesse) {
 
 void gauche(int vitesse) {
   int PWM = map(vitesse, 0, 100, 0, 255);
-  
+
   int gauche = map(PWM, 0, 255, 0, 255);
   int droite = map(PWM, 0, 255, 0, 255);
-  
+
   analogWrite(IN1, 0);
   analogWrite(IN2, gauche);
   analogWrite(IN3, droite);
@@ -157,10 +158,10 @@ void gauche(int vitesse) {
 
 void droite(int vitesse) {
   int PWM = map(vitesse, 0, 100, 0, 255);
-  
+
   int gauche = map(PWM, 0, 255, 0, 255);
   int droite = map(PWM, 0, 255, 0, 255);
-  
+
   analogWrite(IN1, gauche);
   analogWrite(IN2, 0);
   analogWrite(IN3, 0);
