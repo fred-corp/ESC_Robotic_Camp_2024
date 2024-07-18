@@ -125,6 +125,23 @@ void loop() {
       arret();
       break;
     case MANUEL:
+      switch(recu){
+        case 'a':
+          avancer(100);
+          break;
+        case 'r':
+          reculer(100);
+          break;
+        case 'g':
+          gauche(100);
+          break;
+        case 'd':
+          droite(100);
+          break;
+        case 's':
+          arret();
+          break;
+      }
       break;
   }
   delay(100);
