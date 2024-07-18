@@ -59,6 +59,20 @@ void loop() {
   }
 }
 
+float capteurDistance() {
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(10);
+
+  long temps = pulseIn(ECHO_PIN, HIGH);
+
+  // calculer la distance en centimètres
+  float distance = (temps * 340.0 / 10000.0) / 2.0;
+
+  return distance;
+}
+
 void stop() {
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, LOW);
