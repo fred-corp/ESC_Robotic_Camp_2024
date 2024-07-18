@@ -61,17 +61,26 @@ void loop() {
     case OBSTACLE:
       // Stop, regarder à gauche et à droite, choisir direction
       // et repasser à l'état normal
-      monServo.write(ANGLE_GAUCHE);
+      for (int angle = ANGLE_FACE; angle <= ANGLE_GAUCHE; angle++) {
+        monServo.write(angle);
+        delay(25);
+      }
       delay(250);
       distanceGauche = capteurDistance();
       delay(100);
 
-      monServo.write(ANGLE_DROIT);
-      delay(400);
+      for (int angle = ANGLE_GAUCHE; angle >= ANGLE_DROIT; angle--) {
+        monServo.write(angle);
+        delay(25);
+      }
+      delay(250);
       distanceDroite = capteurDistance();
       delay(100);
 
-      monServo.write(ANGLE_FACE);
+      for (int angle = ANGLE_DROIT; angle <= ANGLE_FACE; angle++) {
+        monServo.write(ANGLE_FACE);
+        delay(25);
+      }
       delay(100);
 
       if (distanceGauche <= DISTANCE_MIN && distanceDroite <= DISTANCE_MIN) {
