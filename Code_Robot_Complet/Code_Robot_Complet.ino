@@ -63,7 +63,7 @@ void loop() {
       // et repasser à l'état normal
       for (int angle = ANGLE_FACE; angle <= ANGLE_GAUCHE; angle++) {
         monServo.write(angle);
-        delay(25);
+        delay(5);
       }
       delay(250);
       distanceGauche = capteurDistance();
@@ -71,15 +71,15 @@ void loop() {
 
       for (int angle = ANGLE_GAUCHE; angle >= ANGLE_DROIT; angle--) {
         monServo.write(angle);
-        delay(25);
+        delay(5);
       }
       delay(250);
       distanceDroite = capteurDistance();
       delay(100);
 
       for (int angle = ANGLE_DROIT; angle <= ANGLE_FACE; angle++) {
-        monServo.write(ANGLE_FACE);
-        delay(25);
+        monServo.write(angle);
+        delay(5);
       }
       delay(100);
 
