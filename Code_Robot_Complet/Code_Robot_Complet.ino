@@ -45,5 +45,71 @@ void setup() {
 }
 
 void loop() {
+  switch(etat){
+    case NORMAL:
+      // Avancer et regarder si il y a un obstacle
+      break;
+    case OBSTACLE:
+      // Stop, regarder à gauche et à droite, choisir direction
+      // et repasser à l'état normal
+      break;
+    case MANUEL:
+      // Plus tard
+      break;
+  }
+}
+
+void stop() {
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+}
+
+void avancer(int vitesse) {
+  int PWM = map(vitesse, 0, 100, 0, 255);
   
+  int gauche = map(PWM, 0, 255, 0, 255);
+  int droite = map(PWM, 0, 255, 0, 255);
+  
+  analogWrite(IN1, gauche);
+  analogWrite(IN2, 0);
+  analogWrite(IN3, droite);
+  analogWrite(IN4, 0);
+}
+
+void reculer(int vitesse) {
+  int PWM = map(vitesse, 0, 100, 0, 255);
+  
+  int gauche = map(PWM, 0, 255, 0, 255);
+  int droite = map(PWM, 0, 255, 0, 255);
+  
+  analogWrite(IN1, 0);
+  analogWrite(IN2, gauche);
+  analogWrite(IN3, 0);
+  analogWrite(IN4, droite);
+}
+
+void gauche(int vitesse) {
+  int PWM = map(vitesse, 0, 100, 0, 255);
+  
+  int gauche = map(PWM, 0, 255, 0, 255);
+  int droite = map(PWM, 0, 255, 0, 255);
+  
+  analogWrite(IN1, 0);
+  analogWrite(IN2, gauche);
+  analogWrite(IN3, droite);
+  analogWrite(IN4, 0);
+}
+
+void droite(int vitesse) {
+  int PWM = map(vitesse, 0, 100, 0, 255);
+  
+  int gauche = map(PWM, 0, 255, 0, 255);
+  int droite = map(PWM, 0, 255, 0, 255);
+  
+  analogWrite(IN1, gauche);
+  analogWrite(IN2, 0);
+  analogWrite(IN3, 0);
+  analogWrite(IN4, droite);
 }
