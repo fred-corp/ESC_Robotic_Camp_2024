@@ -17,6 +17,7 @@ Servo monServo;
 #define ANGLE_FACE    90
 #define ANGLE_GAUCHE 180
 #define ANGLE_DROIT    0
+#define DISTANCE_MIN  15
 
 // Mots-clés
 #define NORMAL   0
@@ -48,15 +49,53 @@ void loop() {
   switch(etat){
     case NORMAL:
       // Avancer et regarder si il y a un obstacle
+      avancer(100);
+      float distance = capteurDistance();
+      if(distance <= DISTANCE_MIN) {
+         stop();
+         etat = OBSTACLE;
+      }
       break;
     case OBSTACLE:
       // Stop, regarder à gauche et à droite, choisir direction
       // et repasser à l'état normal
+      monServo.write(ANGLE_GAUCHE);
+      delay(250);
+      float distanceGauche = capteurDistance();
+      delay(100);
+
+      monServo.write(ANGLE_DROIT);
+      delay(400);
+      float distanceDroite = capteurDistance();
+      delay(100);
+
+      monServo.write(ANGLE_FACE);
+      delay(100);
+
+      if(distanceGauche <= DISTANCE_MIN && distanceDroite <= DISTANCE_MIN) {
+        reculer(40);
+        delay(750);
+        stop();
+        break;
+      }
+      
+      if(distanceGauche > distanceDroite){
+        gauche(50);
+        delay(500);
+        etat = NORMAL;
+      }
+      else {
+        droite(50);
+        delay(500);
+        etat = NORMAL;
+      }
+      
       break;
     case MANUEL:
       // Plus tard
       break;
   }
+  delay(100);
 }
 
 float capteurDistance() {
